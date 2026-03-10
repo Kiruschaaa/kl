@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:dart_application_1/dart_application_1.dart' as dart_application_1;
 import 'dart:io';
 
 void main() {
@@ -18,22 +15,22 @@ void main() {
 
   print('---- РАСШИРЕННЫЙ ОТЧЁТ ПО ГРУППЕ ----');
 
-  printSummaryTable(journal, subjects);
+  printTable(journal, subjects);
 
   searchStudent(journal, subjects);
 
-  printUniqueGrades(journal);
+  uniqueGrades(journal);
 
-  printSubjectStats(journal);
+  minMaxSubjects(journal);
 
-  printStudentsWithOneFail(journal, subjects);
+  studentParasha(journal, subjects);
 
-  printAboveAverageSubjects(journal, subjects);
+  lionsInStudents(journal, subjects);
 
-  printCategoryCounts(journal);
+  castsStudents(journal);
 }
 
-void printSummaryTable(Map<String, Map<String, int>> journal, List<String> subjects) {
+void printTable(Map<String, Map<String, int>> journal, List<String> subjects) {
   print('СВОДНАЯ ТАБЛИЦА ОЦЕНОК');
   print('-' * 80);
   
@@ -60,7 +57,13 @@ void printSummaryTable(Map<String, Map<String, int>> journal, List<String> subje
       }
     }
     
-    double average = count > 0 ? sum / count : 0;
+    double average;
+    if (count > 0) {
+      average = sum / count;
+    } else {
+      average = 0;
+    }
+
     print('${average.toStringAsFixed(2).padRight(10)}');
   }
   
@@ -77,9 +80,16 @@ void printSummaryTable(Map<String, Map<String, int>> journal, List<String> subje
         count++;
       }
     }
-    double avg = count > 0 ? sum / count : 0;
-    stdout.write('${avg.toStringAsFixed(2).padRight(12)}');
+
+    double average;
+    if (count > 0) {
+      average = sum / count;
+    } else {
+      average = 0;
+    }
+    stdout.write('${average.toStringAsFixed(2).padRight(12)}');
   }
+
   print('\n');
 }
 
@@ -128,7 +138,13 @@ void searchStudent(Map<String, Map<String, int>> journal, List<String> subjects)
     }
   }
   
-  double average = count > 0 ? sum / count : 0;
+  double average;
+    if (count > 0) {
+      average = sum / count;
+    } else {
+      average = 0;
+    }
+
   print('\nСредний балл: ${average.toStringAsFixed(2)}');
   
   String category = average >= 4.5 ? 'Отличник' : 
@@ -137,7 +153,7 @@ void searchStudent(Map<String, Map<String, int>> journal, List<String> subjects)
   print('Категория: $category\n');
 }
 
-void printUniqueGrades(Map<String, Map<String, int>> journal) {
+void uniqueGrades(Map<String, Map<String, int>> journal) {
   print('---- ОЦЕНКИ, ВСТРЕЧАЮЩИЕСЯ РОВНО 1 РАЗ ----');
   
   Map<int, int> gradeFrequency = {};
@@ -163,7 +179,7 @@ void printUniqueGrades(Map<String, Map<String, int>> journal) {
   }
 }
 
-void printSubjectStats(Map<String, Map<String, int>> journal) {
+void minMaxSubjects(Map<String, Map<String, int>> journal) {
   print('---- СТАТИСТИКА ПО ПРЕДМЕТАМ ----');
   print('-' * 50);
   
@@ -200,7 +216,7 @@ void printSubjectStats(Map<String, Map<String, int>> journal) {
   }
 }
 
-void printStudentsWithOneFail(Map<String, Map<String, int>> journal, List<String> subjects) {
+void studentParasha(Map<String, Map<String, int>> journal, List<String> subjects) {
   print('---- СТУДЕНТЫ С РОВНО ОДНОЙ ДВОЙКОЙ ----');
   print('-' * 50);
   
@@ -225,7 +241,7 @@ void printStudentsWithOneFail(Map<String, Map<String, int>> journal, List<String
   if (!found) print('Нет студентов с одной двойкой.');
 }
 
-void printAboveAverageSubjects(Map<String, Map<String, int>> journal, List<String> subjects) {
+void lionsInStudents(Map<String, Map<String, int>> journal, List<String> subjects) {
   print('---- ПРЕДМЕТЫ ВЫШЕ ОБЩЕГО СРЕДНЕГО ПО ГРУППЕ ----');
   print('-' * 50);
   
@@ -239,7 +255,14 @@ void printAboveAverageSubjects(Map<String, Map<String, int>> journal, List<Strin
     }
   }
   
-  double overallAverage = totalCount > 0 ? totalSum / totalCount : 0;
+  double overallAverage;
+
+  if (totalCount > 0) {
+    overallAverage = totalSum / totalCount;
+  } else {
+    overallAverage = 0;
+  }
+
   print('Общий средний балл по группе: ${overallAverage.toStringAsFixed(2)}\n');
   
   for (var subject in subjects) {
@@ -263,7 +286,7 @@ void printAboveAverageSubjects(Map<String, Map<String, int>> journal, List<Strin
   }
 }
 
-void printCategoryCounts(Map<String, Map<String, int>> journal) {
+void castsStudents(Map<String, Map<String, int>> journal) {
   print('---- РАСПРЕДЕЛЕНИЕ СТУДЕНТОВ ПО КАТЕГОРИЯМ ----');
   print('-' * 50);
   
@@ -278,7 +301,12 @@ void printCategoryCounts(Map<String, Map<String, int>> journal) {
       count++;
     }
     
-    double average = count > 0 ? sum / count : 0;
+    double average;
+    if (count > 0) {
+      average = sum / count;
+    } else {
+      average = 0;
+    }
     
     if (average >= 4.5) {
       excellent++;
